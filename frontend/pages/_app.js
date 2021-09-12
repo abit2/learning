@@ -1,33 +1,12 @@
-/* _app.js */
-import React from "react";
-import App from "next/app";
-import Head from "next/head";
+import { ApolloProvider } from "@apollo/client";
+import client from "../apollo-client";
 
-export default class MyApp extends App {
-  static async getInitialProps({ Component, router, ctx }) {
-    let pageProps = {};
-
-    if (Component.getInitialProps) {
-      pageProps = await Component.getInitialProps(ctx);
-    }
-    return { pageProps };
-  }
-
-  render() {
-    const { Component, pageProps } = this.props;
+function MyApp({ Component, pageProps }) {
     return (
-      <>
-        <Head>
-          <link
-            rel="stylesheet"
-            href="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/css/bootstrap.min.css"
-            integrity="sha384-Gn5384xqQ1aoWXA+058RXPxPg6fy4IWvTNh0E263XmFcJlSAwiGgFAW/dAiS6JXm"
-            crossOrigin="anonymous"
-          />
-        </Head>
-
-          <Component {...pageProps} />
-      </>
+      <ApolloProvider client={client}>
+        <Component {...pageProps} />
+      </ApolloProvider>
     );
   }
-}
+
+  export default MyApp

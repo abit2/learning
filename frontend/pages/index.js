@@ -1,20 +1,52 @@
-/* pages/index.js */
-import { Button, Alert } from "reactstrap";
-import Layout from "../components/Layout";
+// pages/index.js
+// import { gql } from "@apollo/client";
+// import client from "../apollo-client";
+import RestaurantList from "../components/RestaurantList";
+import React, {useState} from "react";
+import {
+  Col,
+  Input,
+  InputGroup,
+  InputGroupAddon,
+  Row
+} from "reactstrap";
+import ClientOnly from "../components/ClientOnly";
 
-const Home = () => {
-    return (
-        <Layout>
-          <div>
-            <div>
-              <Alert color="primary">
-                Hello Project is strapi-next with Bootstrap
-              </Alert>
-              &nbsp; <Button color="primary">Hello from nextjs</Button>
-            </div>
+
+
+const Home = (props) => {
+  console.log(props);
+
+  const [query, setQuery] = useState("");
+  const handleSearchQueryChange = (e) => {
+    setQuery(e.target.value);
+  };
+
+  return (
+    <div className="container-fluid">
+      <Row>
+        <Col>
+          <div className="search">
+            <InputGroup>
+              <InputGroupAddon addonType="append"> Search </InputGroupAddon>
+              <Input onChange={handleSearchQueryChange} />
+            </InputGroup>
           </div>
-        </Layout>
-        
-      );
+          <ClientOnly>
+            <RestaurantList search={query} />
+          </ClientOnly>
+        </Col>
+      </Row>
+      <style jsx>
+        {`
+          .search {
+            margin: 20px;
+            width: 500px;
+          }
+        `}
+      </style>
+    </div>
+  );
 }
+
 export default Home;
